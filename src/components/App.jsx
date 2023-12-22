@@ -1,8 +1,9 @@
 import { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
-import { nanoid } from 'nanoid';
 import { Filter } from './Filter/Filter';
+import css from './App.module.css';
+import { nanoid } from 'nanoid';
 
 export class App extends Component {
   state = {
@@ -62,15 +63,23 @@ export class App extends Component {
     const filterContacts = this.filterContacts();
 
     return (
-      <div className="main">
+      <div className={css.main}>
         <h1>Phonebook</h1>
         <ContactForm addNewContact={this.addNewContact} />
         <h2>Contacts</h2>
-        <Filter value={filter} onChangeFilter={this.changeFilter} />
-        <ContactList
-          contacts={filterContacts}
-          onRemoveContact={this.removeContact}
-        />
+        {this.state.contacts.length > 0 ? (
+          <>
+            <Filter value={filter} onChangeFilter={this.changeFilter} />
+            <ContactList
+              contacts={filterContacts}
+              onRemoveContact={this.removeContact}
+            />
+          </>
+        ) : (
+          <p className={css.emptyInfo}>
+            Your phonebook is empty. Add first contact!
+          </p>
+        )}
       </div>
     );
   }
